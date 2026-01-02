@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Todo List</title>
+</head>
+
+<body>
+
+    <h1>Todo List</h1>
+
+    <!-- 追加フォーム -->
+    <form th:action="@{/todos/add}" th:object="${todoForm}" method="post">
+        <input type="text" th:field="*{title}" placeholder="やること">
+        <input type="text" th:field="*{description}" placeholder="概要">
+        <input type="date" th:field="*{deadline}">
+        <!-- input type="date"は、ブラウザーでカレンダーを出す。指定しない限りyyyy-MM-dd形式で出す。 -->
+        <select th:field="*{priority}">
+            <option th:each="p: ${T(com.example.todo.model.Todo.Priority).values()}"
+            th:value="${p}"
+            th:text="${p}">
+            </option>
+        </select>
+
+        <button type="submit">追加</button>
+    </form>
+
+    <hr>
+
+    <!-- 一覧 -->
+    <table border="1">
+        <tr>
+            <th>課題名</th>
+            <th>概要</th>
+            <th>締切日付</th>
+            <th>優先度</th>
+            <th>進捗状況</th>
+            <!-- <th>操作</th> -->
+        </tr>
+
+        <tr th:each="todo : ${todos}">
+            <td>
+                <a th:href="@{/todos/{id}(id=${todo.id})}" th:text="${todo.title}"></a>
+            </td>
+            <td th:text="${todo.description}"></td>
+            <td th:text="${todo.deadline != null ? #temporals.format(todo.deadline, 'yyyy年MM月dd日') : ''}"></td>
+            <td th:text="${todo.priority}"></td>
+            <td th:text="${todo.progress}">TODO</td>
+
+            <!-- <td>
+                <a th:href="@{/todos/{id}(id=${todo.id})}">詳細</a>
+            </td> -->
+        </tr>
+    </table>
+
+</body>
+
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Todo Detail</title>
+</head>
+
+<body>
+    <h1>Todo Detail</h1>
+
+    <form th:action="@{/todos/{id}/update(id=${todo.id})}" th:object="${todo}" method="post">
+
+        <input type="hidden" th:field="*{id}" />
+
+        <p>課題名:
+            <input type="text" th:field="*{title}" />
+        </p>
+
+        <p>概要:
+            <input type="text" th:field="*{description}" />
+        </p>
+
+        <p>進捗状況:
+            <select th:field="*{progress}">
+                <option th:each="p: ${T(com.example.todo.model.Todo.Progress).values()}" th:value="${p}" th:text="${p}">
+                </option>
+            </select>
+        </p>
+
+        <p>締切期限:
+            <input type="date" id="deadline" name="deadline" th:value="${todo.deadline != null ? todo.deadline:'' }" />
+
+        </p>
+
+        <p>優先度:
+            <select th:field="*{priority}">
+                <option th:each="p: ${T(com.example.todo.model.Todo.Priority).values()}" th:value="${p}" th:text="${p}">
+                </option>
+            </select>
+        </p>
+        <button type="submit">更新</button>
+    </form>
+
+    <form th:action="@{/todos/{id}/delete(id=${todo.id})}" method="post" onsubmit="return confirm('削除してよいですか？');">
+        <button type="submit">削除</button>
+    </form>
+
+    <p><a th:href="@{/todos}">一覧に戻る</a></p>
+</body>
+
+</html>

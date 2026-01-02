@@ -1,0 +1,26 @@
+# Java/Spring Boot
+Java/target/
+Java/build/
+Java/.gradle/
+Java/.idea/
+Java/*.iml
+Java/.classpath
+Java/.project
+Java/.settings/
+Java/bin/
+Java/out/
+
+# TypeScript/Node.js
+Typescript/node_modules/
+Typescript/dist/
+Typescript/build/
+Typescript/.env
+Typescript/*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
