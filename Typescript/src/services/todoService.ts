@@ -31,6 +31,6 @@ export const todoService = {
     },
     
     async delete(id: number): Promise<void> {
-     const response = await apiClient.delete('/${id');
+     const response = await apiClient.delete('/${id}');
     },
 };

@@ -39,9 +39,9 @@ export const useTodos = () => {
     });
 
     return {
-        todos: todosQuery.data ?? [], // データがない場合はから配列
-        isLoading: todosQuery.isLoading,
-        isError: todosQuery.isError,
+        todos: todosQuery.data ?? [], // データそのもの。データがない場合はから配列
+        isLoading: todosQuery.isLoading, // 読み込み中かどうか
+        isError: todosQuery.isError, 
         error: todosQuery.error,
         createTodo: createTodoMutation.mutate,
         updateTodo: updateTodoMutation.mutate,
