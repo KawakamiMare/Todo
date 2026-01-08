@@ -12,7 +12,7 @@ function App() {
   const [priority, setPriority] = useState('');
   
   const PRIORITIES = ["A", "B", "C"];
-  const today  = new Date().toISOString().split('T')[0];
+  const now  = new Date().toISOString().split('T')[0];
 
   if (isLoading) 
     return <div>読み込み中... </div>;
@@ -53,8 +53,8 @@ return (
       <input 
         value={deadline}
         onChange={(e) => setDeadline(e.target.value)}
-        type='date'
-        min={today}
+        type='datetime-local'
+        min={now}
       />
       <select
         value={priority}

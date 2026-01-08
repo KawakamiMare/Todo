@@ -26,11 +26,11 @@ export const todoService = {
     },
 
     async update(id: number, todo: Todo): Promise<Todo> {
-     const response = await apiClient.put<Todo>('/${id}', todo);
+     const response = await apiClient.put<Todo>(`/${id}`, todo);
      return response.data;
     },
     
     async delete(id: number): Promise<void> {
-     const response = await apiClient.delete('/${id}');
+     const response = await apiClient.delete(`/${id}`);
     },
 };

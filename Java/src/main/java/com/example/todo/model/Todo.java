@@ -43,7 +43,8 @@ public class Todo {
     private Progress progress = Progress.TODO; // 初期値をTODOに
 
     private String description;
-    @FutureOrPresent private LocalDate deadline;
+    @FutureOrPresent
+    private LocalDateTime deadline;
     private Priority priority;
 
     @CreatedDate
