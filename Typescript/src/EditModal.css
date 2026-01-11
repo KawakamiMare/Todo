@@ -1,0 +1,13 @@
+/* filepath: /src/EditModal.css */
+.modal {
+  position: fixed; /* 画面に固定 */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* ど真ん中に配置 */
+  background-color: white;
+  padding: 20px;
+  border: 2px solid black;
+  z-index: 1000; /* 一番手前に表示 */
+  width: 300px;
+  height: 200px;
+}

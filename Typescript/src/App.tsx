@@ -1,10 +1,13 @@
-import React,{useState} from 'react';
+import React,{use, useState} from 'react';
 import './App.css';
 import { useTodos } from './hooks/useTodos';
+import EditModal from './EditModal';
 
-function App() {
+function App() {  
   // フックを呼び出すだけで、取得、ローディング、更新関数が全部手に入る
   const { todos, isLoading, createTodo, deleteTodo } = useTodos();
+
+  const [showEditModal, setShowEditModal] = useState(false);
 
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -34,6 +37,10 @@ function App() {
   setDescription('') 
   setDeadline('')
   setPriority('') 
+};
+
+const ShowModal = () => {
+  setShowEditModal(true);
 };
 
 return (
@@ -75,15 +82,20 @@ return (
       <ul>
         {todos.map(todo =>(
           <li key={todo.id}>
+            <span style={{cursor: 'pointer', color: 'blue', textDecoration: 'underline'}}
+              onClick={() => ShowModal()}
+              >
             {todo.title}
+            </span>
             {todo.description}
             {todo.deadline}
             {todo.priority}
             {todo.progress}
-            <button onClick={() => deleteTodo(todo.id)}>削除</button>
+            <button onClick={() =>{if(window.confirm("本当に削除してよろしいですか？")) deleteTodo(todo.id)}}>削除</button>
           </li>
         ))}
       </ul>
+      <EditModal showEditModal={showEditModal} />
 
   </div>
 );
