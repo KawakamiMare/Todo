@@ -8,7 +8,7 @@ import { Todo } from './types/todo';
 
 function App() {
   // フックを呼び出すだけで、取得、ローディング、更新関数が全部手に入る
-  const { todos, isLoading, createTodo, deleteTodo } = useTodos();
+  const { todos, isLoading, createTodo, deleteTodo, updateTodo } = useTodos();
 
   const [showEditModal, setShowEditModal] = useState(false);
 
@@ -53,6 +53,10 @@ function App() {
     setShowEditModal(false);
   }
 
+  const handleSaveEdit = (updatedTodo: Todo) => {
+    updateTodo({ id: updatedTodo.id, todo: updatedTodo });
+    handleCloseModal();
+  };
 
   return (
 
@@ -115,11 +119,9 @@ function App() {
         open={showEditModal}
         onClose={handleCloseModal}
         todo={editingTodo}
+        onSave={handleSaveEdit}
       />
-
-
     </div>
-
   );
 }
 export default App;
