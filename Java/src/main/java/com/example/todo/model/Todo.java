@@ -4,7 +4,6 @@ import java.lang.annotation.Inherited;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-
 import jakarta.persistence.*;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
@@ -15,6 +14,8 @@ import org.antlr.v4.runtime.misc.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,24 +23,29 @@ import lombok.NoArgsConstructor;
 
 @Data // getter,setterの自動生成
 @NoArgsConstructor // 引数なしのコンストラクタを自動生成
+// とりあえず空っぽのインスタンを作って、そこにDBから取ってきた値（ID:1, titel:"買い物"...）を詰め込む
 @AllArgsConstructor // 全フィールドを引数にとるコンストラクタを自動生成
 @Entity
 @Table(name = "todos")
+@EntityListeners(AuditingEntityListener.class)
 
 public class Todo {
     public enum Progress {
         TODO, IN_PROGRESS, ALMOST_DONE, DONE, STOPPING
     }
+
     public enum Priority {
         A, B, C
     }
 
-    @Id 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) //IDを自動採番してくれるのは、DBのAutoIncrement
     private Long id;
-    @NotBlank private String title;
+    @NotBlank
+    private String title;
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.STRING) // もしEnumType.ORDINALのように文字列を指定しなかったら、DBには0,1...のように保存される
+// だから順番を入れ替えたりとかしたら、0がTODOから急にSTOPPINGのように変わったりする。保守性のために必ずSTRINGと書く
     private Progress progress = Progress.TODO; // 初期値をTODOに
 
     private String description;
@@ -50,10 +56,8 @@ public class Todo {
     @CreatedDate
     private LocalDateTime createdAt;
 
-    @LastModifiedBy
+    @LastModifiedDate //LastModifiedByは、誰が更新したか
     private LocalDateTime updatedAt;
-
-    
 
     // @AllArgsConstructorは↓を自動生成する
     // public Todo (Long id, String title, boolean done) {
@@ -63,23 +67,23 @@ public class Todo {
     // }
 
     // public Long getId() {
-    //     return id;
+    // return id;
     // }
 
     // public String getTitle() {
-    //     return title;
+    // return title;
     // }
 
     // public Progress getProgress() {
-    //     return progress;
+    // return progress;
     // }
 
     // public String getDescription() {
-    //     return description;
+    // return description;
     // }
 
     // public LocalDate getDeadLine() {
-    //     return deadLine;
+    // return deadLine;
     // }
-    //↑にあるような、get〇〇は、@Dataで自動生成されるので全て不要
+    // ↑にあるような、get〇〇は、@Dataで自動生成されるので全て不要
 }

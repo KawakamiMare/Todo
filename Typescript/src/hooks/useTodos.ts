@@ -44,7 +44,7 @@ export const useTodos = () => {
         isError: todosQuery.isError, 
         error: todosQuery.error,
         createTodo: createTodoMutation.mutate,
-        updateTodo: updateTodoMutation.mutate,
+        updateTodo: updateTodoMutation.mutate, //mutateという実行機能に、updateTodoという名前をつけている
         deleteTodo: deleteTodoMutation.mutate,
     };
 }

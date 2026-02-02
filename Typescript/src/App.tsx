@@ -54,7 +54,7 @@ function App() {
   }
 
   const handleSaveEdit = (updatedTodo: Todo) => {
-    updateTodo({ id: updatedTodo.id, todo: updatedTodo });
+    updateTodo({id: updatedTodo.id, todo: updatedTodo});
     handleCloseModal();
   };
 
