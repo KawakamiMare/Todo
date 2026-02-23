@@ -62,3 +62,23 @@
   - **Spread Syntax**: オブジェクトに対するスプレッド構文 `{...obj}` と配列に対する構文 `[...arr]` の違い。
   - **Backend Architecture**: Controller（窓口）と Service（職人）の役割分担、およびServiceがステートレス（引数ベース）である理由（競合状態の回避）。
 - **検証**: ブラウザリロードによる永続化確認、Networkタブでの Payload/Response 確認。
+
+
+
+## 2026-2/9
+
+### 🧠 My Insight
+
+-Parameter 0 of constructor in com.example.todo.control.TodoController required a bean of type 'com.example.todo.service.TodoService' that could not be found.
+このエラー、見たことある。多分、コンストラクタで使う定数などを初期化できていなかった？
+
+### 🤖 AI Context
+
+
+## 2026-2/9
+
+### 🧠 My Insight
+
+-javaScriptのオブジェクト（連想配列）へのアクセスはドット記法obj.keyと、ブラケット記法obj['key']があって、ブラケットだとkeyに後から変数を入れれたりする。またkeyに-や数字など変数に使えない文字を使っている場合、ブラケットしかできない。また、オブジェクトとはuseTodos.tsのreturnみたいに、{key: value}のように書く。ドット記法の方が見やすいから、基本こっち使って、ブラケットじゃないといけない時だけ使う
+
+### 🤖 AI Context

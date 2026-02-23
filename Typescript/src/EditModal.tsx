@@ -1,38 +1,26 @@
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import './EditModal.css';
 import { Box, Button, Dialog, DialogContent, DialogTitle, Input, MenuItem, Select, TextField } from "@mui/material";
 import { Todo, PriorityType, ProgressType } from "./types/todo";
 import { TODO_PRIORITIES, TODO_PROGRESS } from "./constants/todoConstants";
+import { INITIAL_TODO_INPUT, TodoInput } from './types/todo';
 
 const EditModal = ({ open, onClose, todo, onSave }: {
     open: boolean; onClose: () => void; todo: Todo | null;
     onSave: (updateTodo: Todo) => void;
 }) => {
-    const [editTitle, setEditTitle] = useState("");
-    const [editDescription, setEditDescription] = useState<string | undefined>("");
-    const [editDeadline, setEditDeadline] = useState<string | undefined>("");
-    const [editPriority, setEditPriority] = useState<PriorityType | "">("");
-    const [editProgress, setEditProgress] = useState<ProgressType | "">("");
-
+    const [inputTodo, setInputTodo] = useState<TodoInput>(INITIAL_TODO_INPUT)
     useEffect(() => {
         if (todo) {
-            setEditTitle(todo.title);
-            setEditDescription(todo.description);
-            setEditDeadline(todo.deadline ?? "");
-            setEditPriority(todo.priority ?? "");
-            setEditProgress(todo.progress);
+            setInputTodo(todo)
         };
     }, [todo]);
 
     const handleSave = () => {
-        if(!todo) return;
+        if (!todo) return;
         const updatedTodo: Todo = {
             ...todo,
-            title: editTitle,
-            description: editDescription === "" ? undefined : editDescription,
-            deadline: editDeadline === "" ? undefined : editDeadline,
-            priority: editPriority === "" ? undefined: (editPriority as PriorityType),
-            progress: editProgress === "" ? "TODO": (editProgress as ProgressType),
+            ...inputTodo
         };
         onSave(updatedTodo);
     };
@@ -42,29 +30,34 @@ const EditModal = ({ open, onClose, todo, onSave }: {
             <DialogTitle>タスクの編集</DialogTitle>
             <DialogContent>
                 <TextField
-                    value={editTitle}
-                    onChange={(e) => setEditTitle(e.target.value)}
+                    value={inputTodo.title}
+                    onChange={(e) => setInputTodo({ ...inputTodo, title: e.target.value })}
+                    // e.target.valueについて。eは、ユーザーがブラウザ上で何かの操作をした時に自動でその記録を作る
+                    // e.targetは、どのHTML要素を操作したかを表すやつ。e.target.valueは、今その瞬間に入力欄に入っている文字
+                    //e　→ 報告書全体（「変更イベントが起きたよ」）
+                    // e.target         → どの要素で？
+                    // e.target.value   → 今の値は？
                     label="課題名"
                     variant="standard"
                     fullWidth
                 />
                 <TextField
-                    value={editDescription}
-                    onChange={(e) => setEditDescription(e.target.value)}
+                    value={inputTodo.description}
+                    onChange={(e) => setInputTodo({ ...inputTodo, description: e.target.value })}
                     label="概要"
                     variant="standard"
                     fullWidth
                 />
                 <TextField
-                    value={editDeadline}
-                    onChange={(e) => setEditDeadline(e.target.value)}
+                    value={inputTodo.deadline}
+                    onChange={(e) => setInputTodo({ ...inputTodo, deadline: e.target.value })}
                     // label="期限"
                     type='datetime-local'
                     fullWidth
                 />
-                <Select
-                    value={editPriority}
-                    onChange={(e) => setEditPriority(e.target.value as PriorityType)}
+                <Select<PriorityType>
+                    value={inputTodo.priority}
+                    onChange={(e) => setInputTodo({ ...inputTodo, priority: e.target.value })}
                     label="優先度"
                     fullWidth
                 >
@@ -74,9 +67,9 @@ const EditModal = ({ open, onClose, todo, onSave }: {
                         </MenuItem>
                     ))}
                 </Select>
-                <Select
-                    value={editProgress}
-                    onChange={(e) => setEditProgress(e.target.value as ProgressType)}
+                <Select<ProgressType>
+                    value={inputTodo.progress}
+                    onChange={(e) => setInputTodo({ ...inputTodo, progress: e.target.value })}
                     label="進捗"
                     fullWidth
                 >

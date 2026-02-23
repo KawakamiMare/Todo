@@ -5,11 +5,13 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.example.todo.model.Todo;
 
 @Service
+@Transactional
 public class TodoService {
     private final TodoRepository todoRepository;
 
@@ -17,6 +19,7 @@ public class TodoService {
         this.todoRepository = todoRepository;
     }
 
+    @Transactional
     public List<Todo> findAll() {
         return todoRepository.findAll();
     }
@@ -39,12 +42,12 @@ public class TodoService {
 
     public Todo update(Long id, Todo updated) {
         Todo todo = todoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Todo not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Todo not found: " + id));
         todo.setTitle(updated.getTitle());
         todo.setProgress(updated.getProgress());
         todo.setDescription(updated.getDescription());
         todo.setDeadline(updated.getDeadline());
         todo.setPriority(updated.getPriority());
-        return todoRepository.save(todo);
+        return todoRepository.save(todo);  // ←@Transactionを書くと、これを書かなくても勝手にDBに保存される。明示的に書いてもいいけど
     }
 }
