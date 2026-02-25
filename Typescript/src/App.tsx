@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { useTodos } from './hooks/useTodos';
 import EditModal from './EditModal';
-import { Button, } from "@mui/material";
+import { Button, Table, TableBody, TableRow, TableCell, TableContainer, Paper, TableHead } from "@mui/material";
 import { Todo } from './types/todo';
 import { TODO_PRIORITIES } from './constants/todoConstants';
 import { INITIAL_TODO_INPUT, TodoInput } from './types/todo';
@@ -87,25 +87,41 @@ function App() {
         {/* type="submit"のボタンが押されると、formタグに送信イベントを発火させる */}
       </form>
 
-      <ul>
-        {/* ↑<ul>の直下に<li>がないといけない。urは順序のないリスト */}
-        {todos.map(todo => (
-          // ↓mapの直下のタグではkeyが必要。画面を書き換える際に、変わりやすい index ではなく、唯一の id を指定しないと適切に処理できない（削除とか）
-          <li key={todo.id}>
-            <span style={{ cursor: 'pointer', color: 'blue', textDecoration: 'underline' }}
-              onClick={() => handleOpenModal(todo)}
-            >
-              {todo.title}
-            </span>
-            {/* divと同じで、グループ化するみたいなやつ。divより短く、一部を装飾する。ここではタイトルだけを青くしている */}
-            {todo.description}
-            {todo.deadline}
-            {todo.priority}
-            {todo.progress}
-            <Button variant='outlined' onClick={() => { if (window.confirm("本当に削除してよろしいですか？")) deleteTodo(todo.id) }}>削除</Button>
-          </li>
-        ))}
-      </ul>
+      <TableContainer sx={{ margin: '0 auto', maxWidth: 900 }} component={Paper}>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell sx={{width: '30%'}}>タイトル</TableCell>
+              <TableCell sx={{width: '30%'}}>概要</TableCell>
+              <TableCell sx={{width: '10%'}}>締切</TableCell>
+              <TableCell sx={{width: '9%'}}>優先度</TableCell>
+              <TableCell sx={{width: '10%'}}>進捗状況</TableCell>
+            </TableRow>
+          </TableHead >
+          <TableBody>
+            {/* ↑<ul>の直下に<li>がないといけない。urは順序のないリスト */}
+            {todos.map(todo => (
+              // ↓mapの直下のタグではkeyが必要。画面を書き換える際に、変わりやすい index ではなく、唯一の id を指定しないと適切に処理できない（削除とか）
+              <TableRow key={todo.id}>
+                <TableCell>
+                  <span style={{ cursor: 'pointer', color: 'blue' }}
+                    onClick={() => handleOpenModal(todo)}
+                  >
+                    {todo.title}
+                  </span>
+                </TableCell>
+                {/* divと同じで、グループ化するみたいなやつ。divより短く、一部を装飾する。ここではタイトルだけを青くしている */}
+                <TableCell>{todo.description}</TableCell>
+                <TableCell>{todo.deadline}</TableCell>
+                <TableCell>{todo.priority}</TableCell>
+                <TableCell>{todo.progress}</TableCell>
+                <Button variant='outlined' onClick={() => { if (window.confirm("本当に削除してよろしいですか？")) deleteTodo(todo.id) }}>削除</Button>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+
 
       <EditModal
         open={showEditModal}
