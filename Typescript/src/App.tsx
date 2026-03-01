@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 
 import { useTodos } from './hooks/useTodos';
 import EditModal from './EditModal';
-import { Button, Table, TableBody, TableRow, TableCell, TableContainer, Paper, TableHead } from "@mui/material";
-import { Todo } from './types/todo';
+import { Button, Table, TableBody, TableRow, TableCell, TableContainer, Paper, TableHead, Box, Card, TextField, Select, Chip } from "@mui/material";
+import { ProgressType, Todo } from './types/todo';
 import { TODO_PRIORITIES } from './constants/todoConstants';
 import { INITIAL_TODO_INPUT, TodoInput } from './types/todo';
 
@@ -49,53 +49,84 @@ function App() {
     handleCloseModal();
   };
 
+  const getProgressColor = (progress: ProgressType) => {
+    switch (progress) {
+      case "TODO":
+        return "default"
+      case "IN_PROGRESS":
+        return "primary"
+      case "ALMOST_DONE":
+        return "info"
+      case "DONE":
+        return "success"
+      case "STOPPING":
+        return "warning"
+    }
+  }
+
   return (
 
     <div className='APP'>
       <h1>What's Next?</h1>
       <form onSubmit={handleAdd}>
-        <input
-          value={inputTodo.title}
-          onChange={(e) => setInputTodo({ ...inputTodo, title: e.target.value })}
-          placeholder='タスクを入力して下さい'
-        />
-        <input
-          value={inputTodo.description}
-          onChange={(e) => setInputTodo({ ...inputTodo, description: e.target.value })}
-          placeholder='概要を入力してください'
-        />
-        <input
-          value={inputTodo.deadline}
-          onChange={(e) => setInputTodo({ ...inputTodo, deadline: e.target.value })}
-          type='datetime-local'
-          min={now}
-        />
-        <select
-          value={inputTodo.priority}
-          onChange={(e) => setInputTodo({ ...inputTodo, priority: e.target.value as TodoInput["priority"] })}
-        >
-          <option>
-
-          </option>
-          {TODO_PRIORITIES.map((p) => (
-            <option key={p.label} value={p.id}>
-              {p.label}
-            </option>
-          ))}
-        </select>
-        <Button type="submit" variant='contained'>登録</Button>
-        {/* type="submit"のボタンが押されると、formタグに送信イベントを発火させる */}
+        <Box sx={{ margin: '0 auto 32px auto', maxWidth: 588 }} component={Paper}>
+          <Card sx={{ p: 2 }}>
+            <TextField
+              fullWidth
+              value={inputTodo.title}
+              onChange={(e) => setInputTodo({ ...inputTodo, title: e.target.value })}
+              placeholder='タスクを入力して下さい'
+              label="タスク名"
+              variant='filled'
+            />
+            {/* <TextField
+              fullWidth
+              value={inputTodo.description}
+              onChange={(e) => setInputTodo({ ...inputTodo, description: e.target.value })}
+              placeholder='概要を入力してください'
+            /> */}
+            <TextField
+              value={inputTodo.deadline}
+              onChange={(e) => setInputTodo({ ...inputTodo, deadline: e.target.value })}
+              type='datetime-local'
+              // min={now}
+              variant='filled'
+              label='締切'
+              sx={{ p: 1 }}
+            />
+            <TextField
+              value={inputTodo.priority}
+              onChange={(e) => setInputTodo({ ...inputTodo, priority: e.target.value as TodoInput["priority"] })}
+              variant='filled'
+              select
+              slotProps={{
+                select: {
+                  native: true,
+                },
+              }}
+              sx={{ p: 1 }}
+            >
+              {TODO_PRIORITIES.map((p) => (
+                <option key={p.label} value={p.id}>
+                  {p.label}
+                </option>
+              ))}
+            </TextField>
+            <Button type="submit" variant='contained'>登録</Button>
+            {/* type="submit"のボタンが押されると、formタグに送信イベントを発火させる */}
+          </Card>
+        </Box>
       </form>
 
       <TableContainer sx={{ margin: '0 auto', maxWidth: 900 }} component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell sx={{width: '30%'}}>タイトル</TableCell>
-              <TableCell sx={{width: '30%'}}>概要</TableCell>
-              <TableCell sx={{width: '10%'}}>締切</TableCell>
-              <TableCell sx={{width: '9%'}}>優先度</TableCell>
-              <TableCell sx={{width: '10%'}}>進捗状況</TableCell>
+              <TableCell sx={{ width: '30%' }}>タイトル</TableCell>
+              <TableCell sx={{ width: '30%' }}>概要</TableCell>
+              <TableCell sx={{ width: '10%' }}>締切</TableCell>
+              <TableCell sx={{ width: '9%' }}>優先度</TableCell>
+              <TableCell sx={{ width: '10%' }}>進捗状況</TableCell>
             </TableRow>
           </TableHead >
           <TableBody>
@@ -113,8 +144,8 @@ function App() {
                 {/* divと同じで、グループ化するみたいなやつ。divより短く、一部を装飾する。ここではタイトルだけを青くしている */}
                 <TableCell>{todo.description}</TableCell>
                 <TableCell>{todo.deadline}</TableCell>
-                <TableCell>{todo.priority}</TableCell>
-                <TableCell>{todo.progress}</TableCell>
+                <TableCell><Chip label={todo.priority} /></TableCell>
+                <TableCell><Chip label={todo.progress} color={getProgressColor(todo.progress)} variant='outlined' /></TableCell>
                 <Button variant='outlined' onClick={() => { if (window.confirm("本当に削除してよろしいですか？")) deleteTodo(todo.id) }}>削除</Button>
               </TableRow>
             ))}
