@@ -3,10 +3,34 @@ import React, { useState } from 'react';
 import { useTodos } from './hooks/useTodos';
 import EditModal from './EditModal';
 import { Button, Table, TableBody, TableRow, TableCell, TableContainer, Paper, TableHead, Box, Card, TextField, Select, Chip } from "@mui/material";
-import { ProgressType, Todo } from './types/todo';
+import { PriorityType, ProgressType, Todo, INITIAL_TODO_INPUT, TodoInput } from './types/todo';
 import { TODO_PRIORITIES } from './constants/todoConstants';
-import { INITIAL_TODO_INPUT, TodoInput } from './types/todo';
 
+const getProgressColor = (progress: ProgressType) => {
+  switch (progress) {
+    case "TODO":
+      return "default"
+    case "IN_PROGRESS":
+      return "primary"
+    case "ALMOST_DONE":
+      return "info"
+    case "DONE":
+      return "success"
+    case "STOPPING":
+      return "warning"
+  }
+}
+
+const getPriorityColor = (priority: PriorityType) => {
+  switch (priority) {
+    case "A":
+      return "error"
+    case "B":
+      return "warning"
+    case "C":
+      return "info"
+  }
+}
 function App() {
   // フックを呼び出すだけで、取得、ローディング、更新関数が全部手に入る
   const { todos, isLoading, createTodo, deleteTodo, updateTodo } = useTodos();
@@ -49,20 +73,6 @@ function App() {
     handleCloseModal();
   };
 
-  const getProgressColor = (progress: ProgressType) => {
-    switch (progress) {
-      case "TODO":
-        return "default"
-      case "IN_PROGRESS":
-        return "primary"
-      case "ALMOST_DONE":
-        return "info"
-      case "DONE":
-        return "success"
-      case "STOPPING":
-        return "warning"
-    }
-  }
 
   return (
 
@@ -144,7 +154,7 @@ function App() {
                 {/* divと同じで、グループ化するみたいなやつ。divより短く、一部を装飾する。ここではタイトルだけを青くしている */}
                 <TableCell>{todo.description}</TableCell>
                 <TableCell>{todo.deadline}</TableCell>
-                <TableCell><Chip label={todo.priority} /></TableCell>
+                <TableCell><Chip label={todo.priority} color={todo.priority ? getPriorityColor(todo.priority) : "default"} /></TableCell>
                 <TableCell><Chip label={todo.progress} color={getProgressColor(todo.progress)} variant='outlined' /></TableCell>
                 <Button variant='outlined' onClick={() => { if (window.confirm("本当に削除してよろしいですか？")) deleteTodo(todo.id) }}>削除</Button>
               </TableRow>

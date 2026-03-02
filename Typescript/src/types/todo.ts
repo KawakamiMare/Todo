@@ -22,5 +22,5 @@ export const INITIAL_TODO_INPUT: TodoInput = {
     description: "",
     progress: "TODO", 
     deadline: "",
-    priority: "B", 
+    priority: undefined, 
 };

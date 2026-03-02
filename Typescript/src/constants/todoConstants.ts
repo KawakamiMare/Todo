@@ -9,5 +9,5 @@ export const TODO_PROGRESS = [
 export const TODO_PRIORITIES = [
     { id: "A", label: "A" },
     { id: "B", label: "B" },
-    { id: "C", label: "C" }
+    { id: "C", label: "C" },
 ] as const;
