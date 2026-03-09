@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from "react";
-import './EditModal.css';
-import { Box, Button, Dialog, DialogContent, DialogTitle, Input, MenuItem, Select, TextField } from "@mui/material";
-import { Todo, PriorityType, ProgressType } from "./types/todo";
-import { TODO_PRIORITIES, TODO_PROGRESS } from "./constants/todoConstants";
-import { INITIAL_TODO_INPUT, TodoInput } from './types/todo';
+import { Box, Button, Dialog, DialogContent, DialogTitle, MenuItem, Select, TextField } from "@mui/material";
+import { Todo, PriorityType, ProgressType, INITIAL_TODO_INPUT, TodoInput } from "../types/todo";
+import { TODO_PRIORITIES, TODO_PROGRESS } from "../constants/todoConstants";
 
-const EditModal = ({ open, onClose, todo, onSave }: {
-    open: boolean; onClose: () => void; todo: Todo | null;
+type EditModalProps = {
+    open: boolean;
+    onClose: () => void;
+    todo: Todo | null;
     onSave: (updateTodo: Todo) => void;
-}) => {
+}
+
+const EditModal = ({ open, onClose, todo, onSave }: EditModalProps) => {
+
     const [inputTodo, setInputTodo] = useState<TodoInput>(INITIAL_TODO_INPUT)
     useEffect(() => {
         if (todo) {
@@ -80,12 +83,10 @@ const EditModal = ({ open, onClose, todo, onSave }: {
                     ))}
                 </Select>
                 <Box my={2} flexDirection="row" justifyContent="flex-end" display="flex">
-
                     <Button onClick={() => handleSave()}>保存</Button>
                 </Box>
             </DialogContent>
         </Dialog >
-
     )
 }
 export default EditModal;
