@@ -66,7 +66,7 @@ export const TodoForm = ({ createTodo }: TodoFormProps) => {
                         }}
                         sx={{ p: '1', width: '40%' }}
                     >
-                        <option value=""></option>
+                        <option value={undefined}></option>
                         {TODO_PRIORITIES.map((p) => (
                             <option key={p.label} value={p.id}>
                                 {p.label}
@@ -79,5 +79,4 @@ export const TodoForm = ({ createTodo }: TodoFormProps) => {
             </Box>
         </form>
     )
-
 }

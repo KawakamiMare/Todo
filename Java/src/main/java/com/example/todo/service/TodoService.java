@@ -25,9 +25,7 @@ public class TodoService {
     }
 
     public Todo create(Todo todo) {
-        if (todo.getProgress() == null) {
-            todo.setProgress(Todo.Progress.TODO);
-        }
+        todo.setProgress(Todo.Progress.TODO);
         return todoRepository.save(todo);
     }
 
@@ -48,6 +46,6 @@ public class TodoService {
         todo.setDescription(updated.getDescription());
         todo.setDeadline(updated.getDeadline());
         todo.setPriority(updated.getPriority());
-        return todoRepository.save(todo);  // ←@Transactionを書くと、これを書かなくても勝手にDBに保存される。明示的に書いてもいいけど
+        return todoRepository.save(todo); // ←@Transactionを書くと、これを書かなくても勝手にDBに保存される。明示的に書いてもいいけど
     }
 }
