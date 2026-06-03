@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Box, Button, Dialog, DialogContent, DialogTitle, MenuItem, Select, TextField } from "@mui/material";
 import { Todo, PriorityType, ProgressType, INITIAL_TODO_INPUT, TodoInput } from "../types/todo";
 import { TODO_PRIORITIES, TODO_PROGRESS } from "../constants/todoConstants";

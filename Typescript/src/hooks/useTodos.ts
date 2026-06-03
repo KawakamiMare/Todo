@@ -8,7 +8,7 @@ export const useTodos = () => {
     // データの取得
     const todosQuery = useQuery({
         queryKey: ['todos'], // キャッシュのキー　キャッシュを識別するためのID。todosをくれと言われたら、サーバーに行かずに、ここに格納されているものを出す
-        queryFn: todoService.getAll,// キャッシュに残っているデータが古かったりキャッシュがない場合、サーバーに取りに行く手順書
+        queryFn: todoService.getAll,// データ取得の関数
     });
     //     // 自分で全部管理しないといけない（大変！）
     // const [todos, setTodos] = useState([]);
@@ -41,7 +41,7 @@ export const useTodos = () => {
             todoService.update(id, todo),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['todos'] });
-        },
+        }
     });
 
     // データの削除

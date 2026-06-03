@@ -88,12 +88,12 @@ public class TodoServiceTest {
         Todo registerdTodo = new Todo();
         registerdTodo.setId(1L);
         registerdTodo.setTitle("タイトル");
-        registerdTodo.setDeadline(LocalDateTime.of(2026, 3, 22, 10, 30));
+        registerdTodo.setDeadline(LocalDateTime.of(2030, 3, 22, 10, 30));
         
         Todo changingTodo = new Todo();
         changingTodo.setId(1L);
         changingTodo.setTitle("変更後です");
-        // registerdTodo.setDeadline(LocalDateTime.of(2026, 3, 22, 10, 30));
+        registerdTodo.setDeadline(LocalDateTime.of(2030, 3, 22, 10, 30));
 
         // mock
         Todo savedTodo = new Todo();
@@ -108,6 +108,6 @@ public class TodoServiceTest {
         // 検証
         assertEquals(savedTodo.getId(), changingResult.getId());
         assertEquals(changingTodo.getTitle(), registerdTodo.getTitle());
-        assertEquals(changingTodo.getDeadline(), registerdTodo.getDeadline());
+        assertEquals(LocalDateTime.of(2030, 3, 22, 10, 30), registerdTodo.getDeadline());
     }
 }
