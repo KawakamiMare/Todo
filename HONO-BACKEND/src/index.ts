@@ -1,30 +1,23 @@
-import { serve } from '@hono/node-server'
 import { Hono } from 'hono'
+import todoRoutes from './routes/todo.js'
+import { serve } from '@hono/node-server';
+import { cors } from 'hono/cors';
+
 
 const app = new Hono()
 
-app.get('/', (c) => {
-  return c.text('Hello Hono!')
-})
+app.use('*', cors({
+  origin: 'https://localhost:3000',
+}))
 
-app.get('/api/todo', (c) => {
-  return c.json([
-    {
-      id: 1,
-      title: 'テスト',
-      progress: 'TODO',
-      description: '',
-      deadline: "再起動しなくて良いの？",
-      priority: null,
-      createdAt: '2026-03-05T22:12:20.333111',
-      updatedAt: '2026-03-05T22:12:20.333111',
-    }
-  ])
-})
+// 子ルータ-(todoRoutes)を親アプリの/api/todoの下に取り付けるtodoRoutesに '/'と書くと '/api/todo'が頭につく
+// controllerに書いてた@RequestMapping("/api/todo")がこれ↓
+app.route('/api/todo', todoRoutes);
+
 
 serve({
   fetch: app.fetch,
   port: 8000
 }, (info) => {
-  console.log(`Server is running on http://localhost:${info.port}`)
+  console.log(`サーバーがhttps://localhost:${info.port} で開かれています`)
 })
